@@ -6,6 +6,18 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/MainMenu.unity
+    guid: 6b16601d450fb424f8d38ac7359b71bd
+  - enabled: 1
+    path: Assets/Scenes/Village.unity
+    guid: ec64bebf9e8210347b52cef2cf4e5ffc
+  - enabled: 1
+    path: Assets/Scenes/SnakeMinigame.unity
+    guid: 601ee4a9f636c75449ae736873cc520a
+  - enabled: 1
+    path: Assets/Scenes/SheepMinigame.unity
+    guid: ea183b2ac5661664ba675d037424fc04
+  - enabled: 1
+    path: Assets/Scenes/BeaverMinigame.unity
+    guid: 075e298ddfd5bbb4d988c723073dcb27
   m_configObjects: {}
