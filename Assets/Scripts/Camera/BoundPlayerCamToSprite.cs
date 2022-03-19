@@ -14,19 +14,15 @@ public class BoundPlayerCamToSprite : MonoBehaviour
     {
         player = gameObject.transform.parent;
         cam = GetComponent<Camera>();
-        Debug.Log(spriteRenderer.bounds);
     }
 
     // Update is called once per frame
     void Update()
     {
         offset = new Vector2(0, 0);
-        Debug.Log(cam.rect);
-        
         Vector2 camExtent = new Vector2(cam.orthographicSize * cam.aspect, cam.orthographicSize);
         Vector2 camMax = (Vector2)player.position + camExtent;
         Vector2 camMin = (Vector2)player.position - camExtent;
-        Debug.Log(camMax);
         if (camMax.y > spriteRenderer.bounds.max.y)
         {
             offset -= new Vector2(0, camMax.y - spriteRenderer.bounds.max.y);
