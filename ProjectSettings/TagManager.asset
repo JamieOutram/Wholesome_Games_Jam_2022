@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - snake1
+  - snake2
+  - snake3
+  - snake4
   layers:
   - Default
   - TransparentFX

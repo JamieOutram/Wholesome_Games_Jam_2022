@@ -15,7 +15,6 @@ public class rope_segment : MonoBehaviour
         {
             aboveSegment.connectedBelow = gameObject;
             float spriteBottom = connectedAbove.GetComponent<SpriteRenderer>().bounds.size.y;
-            Debug.Log(spriteBottom);
             GetComponent<HingeJoint2D>().connectedAnchor = new Vector2(0, spriteBottom/transform.localScale.y*-1);
         }
         else
