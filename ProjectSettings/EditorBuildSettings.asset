@@ -15,9 +15,18 @@ EditorBuildSettings:
     path: Assets/Scenes/SnakeMinigame.unity
     guid: 601ee4a9f636c75449ae736873cc520a
   - enabled: 1
-    path: Assets/Scenes/SheepMinigame.unity
-    guid: ea183b2ac5661664ba675d037424fc04
-  - enabled: 1
     path: Assets/Scenes/BeaverMinigame.unity
     guid: 075e298ddfd5bbb4d988c723073dcb27
+  - enabled: 1
+    path: Assets/Scenes/SheepMinigame4.unity
+    guid: 9bf5f8dd01615bd4db07ff10672d8e8f
+  - enabled: 1
+    path: Assets/Scenes/SheepMinigame2.unity
+    guid: e79c6f835f27df04ba36ff2a381cbc78
+  - enabled: 1
+    path: Assets/Scenes/SheepMinigame3.unity
+    guid: c14550ee1ad0bf84f8c788693a5dac10
+  - enabled: 1
+    path: Assets/Scenes/SheepMinigame1.unity
+    guid: a4ad5b68b60a83247865ddfda0601dc9
   m_configObjects: {}

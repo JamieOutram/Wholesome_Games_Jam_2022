@@ -5,11 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Map Cam
+  - wool
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Sheep
   - Water
   - UI
   - 
@@ -42,8 +43,8 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: UI
-    uniqueID: 339181993
+  - name: Sheep
+    uniqueID: 2749813879
     locked: 0
   - name: Background
     uniqueID: 2749118037
