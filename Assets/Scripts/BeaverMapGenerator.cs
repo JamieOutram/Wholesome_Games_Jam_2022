@@ -9,6 +9,9 @@ public class BeaverMapGenerator : MonoBehaviour
 {
     private float m_time;
 
+    public AudioSource audioSource;
+    public AudioClip splashSound;
+
     public bool m_debugFlows;
     public bool m_debugRiverPath;
     public bool m_debugDams;
@@ -890,14 +893,17 @@ public class BeaverMapGenerator : MonoBehaviour
         Vector2Int start2d = new Vector2Int(start.x, start.y);
         Vector2Int end2d = new Vector2Int(end.x, end.y);
 
-        if(OutOfRange(start2d) || OutOfRange(end2d)) { return; }
+        if(OutOfRange(start2d) && OutOfRange(end2d)) { return; }
 
         List<Vector2Int> locs = GetStepsBetween(start2d, end2d, false);
 
         foreach (Vector2Int loc in locs)
         {
+            if (OutOfRange(loc)) { continue; }
             m_isDam [loc.x, loc.y]= true;
         }
+
+        audioSource.PlayOneShot(splashSound);
 
         RecalculateForNewDam();
         DrawRiver();
