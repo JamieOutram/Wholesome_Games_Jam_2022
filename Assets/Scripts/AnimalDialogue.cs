@@ -5,8 +5,10 @@ using UnityEngine;
 public class AnimalDialogue : MonoBehaviour
 {
     public DialogueTextBehaviour textBehaviour;
+    
     public string dialogueKey = "Sad_Shark";
     int pointer = 0;
+    AnimalMinigameTrigger game;
 
     Dictionary<string, string[]> dialogue = new Dictionary<string, string[]>{ 
         ["Sad_Beaver"] = new string[]{
@@ -29,14 +31,34 @@ public class AnimalDialogue : MonoBehaviour
 
     string defaultDialogue = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,";
 
+    private void Start()
+    {
+        game = GetComponent<AnimalMinigameTrigger>();
+    }
+
     public void NextDialogue()
     {
-        if (pointer >= dialogue[dialogueKey].Length)
+        string[] text;
+        if (dialogue.ContainsKey(dialogueKey))
+        {
+            text = dialogue[dialogueKey];
+        }
+        else
+        {
+            text = new string[] { defaultDialogue };
+        }
+
+
+        if (pointer >= text.Length)
         {
             pointer = 0; 
+            if(!ReferenceEquals(game, null))
+            {
+                game.Load();
+            }
             return;
         }
-        textBehaviour.WriteText(dialogue[dialogueKey][pointer]);
+        textBehaviour.WriteText(text[pointer]);
         pointer++;
     }
 }

@@ -3,9 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class TransitionBehaviour : MonoBehaviour
 {
-
     static Animator anim;
-
     static string nextScene;
 
     // Start is called before the first frame update

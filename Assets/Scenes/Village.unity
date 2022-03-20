@@ -783,6 +783,67 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &704285508
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 704285511}
+  - component: {fileID: 704285510}
+  - component: {fileID: 704285509}
+  m_Layer: 0
+  m_Name: ProgressTracker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &704285509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704285508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f95c06687d56fd43a196b130488e343, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &704285510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704285508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 772a3c162b84db1489f020b1d33bf290, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snake: 0
+  mouse: 0
+  beaver: 0
+  shark: 0
+  sheep: 0
+--- !u!4 &704285511
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704285508}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.40338004, y: -0.9675725, z: -1190.1627}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &760538025
 GameObject:
   m_ObjectHideFlags: 0
@@ -2216,6 +2277,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2729432347670937878, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}
+      propertyPath: sceneName
+      value: SheepMinigame1
+      objectReference: {fileID: 0}
     - target: {fileID: 4420281624602710572, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}
       propertyPath: textBehaviour
       value: 
