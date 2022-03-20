@@ -69,12 +69,13 @@ public class DamLogHandler : MonoBehaviour
         if (!m_hasActiveLog) { return; }
 
         SpriteRenderer sprite = m_currentLog.GetComponent<SpriteRenderer>();
-        Vector3 lengthVec = new Vector3(0.0f, sprite.bounds.size.y  * 0.5f, 0.0f);
+        Vector3 lengthVec = new Vector3(0.0f, m_currentLog.GetComponent<DamLog>().InitY() * 0.50f, 0.0f);
         Vector3 start = sprite.transform.position - (sprite.transform.rotation * lengthVec);
         Vector3 end = sprite.transform.position + (sprite.transform.rotation * lengthVec);
 
         Vector3Int startTmap = tilemap.WorldToCell(start);
         Vector3Int endTmap = tilemap.WorldToCell(end);
+        Debug.Log("Log goes from " + startTmap + " to " + endTmap);
 
         mapgen.AddLogsAtLoc(startTmap, endTmap);
     }

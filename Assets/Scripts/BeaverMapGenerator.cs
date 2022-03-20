@@ -7,6 +7,12 @@ using SimplexNoise;
 
 public class BeaverMapGenerator : MonoBehaviour
 {
+    private float m_time;
+
+    public bool m_debugFlows;
+    public bool m_debugRiverPath;
+    public bool m_debugDams;
+
     public int WIDTH = 89 * 2;
     public int HEIGHT = 100;
 
@@ -18,17 +24,27 @@ public class BeaverMapGenerator : MonoBehaviour
     public float mountainHeightScale = 0.8f;
 
     public float noiseScale = 0.005f;
-    public float directionNoise = 2.5f;
-    public float momentumChangePenalty = 1.0f;
     public float startWidth = 5.0f;
     public float endWidth = 10.0f;
+
+    public float distToEndCarveStrength = 1.0f;
+    public float distToRiverCarveStrength = 1.0f;
+    public float noiseCarveStrength = 1.0f;
+    public float riverCarveStrength = 1.0f;
+
+    public int startCarveIdx = 15;
+    public int maxCarveDistance = 30;
+    public float carveCutoff = 0.1f;
+
+    public float damAdjust = 0;
 
     public int minSearch = 3;
     public int maxSearch = 10;
     public int minRadius = 5;
 
-    public float carveStrength = 5;
-    public int carveRadius = 5;
+    public int m_RiverSearchSize = 20;
+    public float bankFalloff = 3.0f;
+    public float riverFalloff = 3.0f;
 
     private float m_noiseMax;
     private Vector2Int m_noiseMaxLoc;
@@ -46,6 +62,7 @@ public class BeaverMapGenerator : MonoBehaviour
     private Vector2Int[,] m_dirToRiver;
 
     private bool m_showFlows;
+    private bool m_win = false;
 
     private List<Vector2Int> m_riverPath = new List<Vector2Int>();
 
@@ -157,7 +174,7 @@ public class BeaverMapGenerator : MonoBehaviour
         itrs = 0;
         while (itrs++ < 10000)
         {
-            if (itrs != 0)
+            if (itrs != 1)
             {
                 backPath.Add(loc);
             }
@@ -193,11 +210,14 @@ public class BeaverMapGenerator : MonoBehaviour
         Debug.Log("Ended Downhill 2 at " + loc);
 
         backPath.Reverse();
+        Debug.Log(m_riverPath[0]);
+        Debug.Log(backPath[backPath.Count - 1]);
+
         backPath.AddRange(m_riverPath);
         m_riverPath = backPath;
     }
 
-    List<Vector2Int> GetStepsBetween(Vector2Int start, Vector2Int end)
+    List<Vector2Int> GetStepsBetween(Vector2Int start, Vector2Int end, bool bAllowDiagonal = true)
     {
         List<Vector2Int> steps = new List<Vector2Int>();
         Vector2Int loc = start;
@@ -209,10 +229,18 @@ public class BeaverMapGenerator : MonoBehaviour
                 remaining.y > 0 ? 1 : (remaining.y < 0 ? -1 : 0)
                 );
 
-            Debug.Log("Chose direction " + nextDir);
-
-            loc += nextDir;
-            steps.Add(loc);
+            if (!bAllowDiagonal && remaining.x != 0 && remaining.y != 0)
+            {
+                loc.x += nextDir.x;
+                steps.Add(loc);
+                loc.y += nextDir.y;
+                steps.Add(loc);
+            }
+            else
+            {
+                loc += nextDir;
+                steps.Add(loc);
+            }
         }
 
         Debug.Assert(loc == end);
@@ -244,9 +272,7 @@ public class BeaverMapGenerator : MonoBehaviour
 
                     if ((start - end).magnitude < minRadius)
                     {
-                        Debug.Log("Getting steps between " + start + " and " + end);
                         List<Vector2Int> steps = GetStepsBetween(start, end);
-                        Debug.Log("Done in " + steps.Count + " steps");
                         reducedPath.AddRange(steps);
                         i = i + j;
                         reducing = true;
@@ -284,12 +310,12 @@ public class BeaverMapGenerator : MonoBehaviour
     int GetMinDistNeighbour(int x, int y)
     {
         int minVal = int.MaxValue;
-        foreach(Vector2Int dir in dirs)
+        foreach (Vector2Int dir in dirs)
         {
             Vector2Int loc = new Vector2Int(x, y) + dir;
             if (OutOfRange(loc)) { continue; }
 
-            minVal = Mathf.Min(minVal, m_distanceFromRiver[x, y]);
+            minVal = Mathf.Min(minVal, m_distanceFromRiver[loc.x, loc.y]);
         }
         return minVal;
     }
@@ -303,11 +329,11 @@ public class BeaverMapGenerator : MonoBehaviour
             Vector2Int loc = new Vector2Int(x, y) + dir;
             if (OutOfRange(loc)) { continue; }
 
-            int dist = m_distanceFromRiver[x, y];
+            int dist = m_distanceFromRiver[loc.x, loc.y];
             if (dist < minVal)
             {
                 minVal = dist;
-                downDir = loc;
+                downDir = dir;
             }
             if (dist == minVal)
             {
@@ -343,7 +369,7 @@ public class BeaverMapGenerator : MonoBehaviour
         {
             for(int y = 0; y < HEIGHT; y++)
             {
-                m_distanceFromRiver[x, y] = int.MaxValue;
+                m_distanceFromRiver[x, y] = int.MaxValue / 2;
             }
         }
 
@@ -353,6 +379,7 @@ public class BeaverMapGenerator : MonoBehaviour
         }
 
         bool bUpdated;
+        int itrs = 0;
         do
         {
             bUpdated = false;
@@ -364,11 +391,13 @@ public class BeaverMapGenerator : MonoBehaviour
                     int minVal = GetMinDistNeighbour(x, y);
                     if(minVal + 1 < m_distanceFromRiver[x, y])
                     {
+                        m_distanceFromRiver[x, y] = minVal + 1;
                         bUpdated = true;
                     }
                 }
             }
-        } while (bUpdated);
+        } while (bUpdated && itrs++ < 10000);
+        Debug.Log("Distance calc done in " + itrs + " iterations");
     }
 
     void CalculateDirToRiver()
@@ -398,27 +427,58 @@ public class BeaverMapGenerator : MonoBehaviour
         }
     }
 
-    void RaiseInitialPath()
+    void AddUnderlyingSlope()
     {
-        int idx = -1;
-        float maxHeight = GetMaxHeightOnRiver(ref idx);
-        Debug.Assert(idx >= 0);
-        for (int i = 0; i < idx; i++)
+        Vector2Int start = m_riverPath[0];
+        Vector2Int end = m_riverPath[m_riverPath.Count - 1];
+
+        Vector2 dir = end - start;
+        dir /= dir.magnitude;
+        float maxDirAlong = Mathf.Sqrt(end.x * dir.x + end.y * dir.y);
+
+        for (int x = 0; x < WIDTH; x++)
         {
-            Func<float, float, float> func = (height, radius) => Mathf.Max(HEIGHT, maxHeight) + 20 * (idx - i) / idx;
-            ApplyToRadius(m_riverPath[i], 10, func);
+            for (int y = 0; y < HEIGHT; y++)
+            {
+                Vector2Int loc = new Vector2Int(x, y);
+                m_terrain[x, y] += (loc - end).magnitude * distToEndCarveStrength;
+                m_terrain[x, y] += m_distanceFromRiver[x, y] * distToRiverCarveStrength;
+                m_terrain[x, y] += m_noiseMap[x, y] * noiseCarveStrength;
+            }
         }
     }
 
+    void CarveInDirection(Vector2Int loc, Vector2Int dir, Func<float, float> carveFunc)
+    {
+        int dist = 1;
+        int maxDist = maxCarveDistance;
+        while (maxDist >= 0)
+        {
+            loc += dir;
+            if (OutOfRange(loc)) { break; }
+            float carveVal = carveFunc(dist * dir.magnitude);
+            m_terrain[loc.x, loc.y] -= carveVal;
+            --maxDist;
+            ++dist;
+
+            dir = -m_dirToRiver[loc.x, loc.y];
+            if(dir.x == 0 && dir.y == 0) { return; }
+            if(carveVal < carveCutoff) { return; }
+        }
+    }
     void CarveRiverPath()
     {
-        int dist = 0;
+        AddUnderlyingSlope();
+        int i = startCarveIdx;
         foreach(Vector2Int loc in m_riverPath)
         {
-            Func<float, float, float> carver = (height, radius) => height - (dist * Mathf.Max(0, carveRadius - radius));
-            ApplyToRadius(loc, carveRadius, carver);
-            dist++;
-        }    
+            Func<float, float> carveFunc = dist => riverCarveStrength * (i - dist);
+            foreach (Vector2Int dir in dirs)
+            {
+                CarveInDirection(loc, dir, carveFunc);
+            }
+            ++i;
+        }
     }
 
     Vector2Int GetLocalFlowDir(Vector2Int loc)
@@ -429,14 +489,20 @@ public class BeaverMapGenerator : MonoBehaviour
     Vector2Int GetLocalFlowDir(Vector2Int loc, ref int blockedByDam)
     {
         List<Tuple<Vector2Int, float>> localFlow = new List<Tuple<Vector2Int, float>>();
+        float localHeight = m_terrain[loc.x, loc.y];
+        bool differentHeights = false;
         foreach (Vector2Int dir in dirs)
         {
             Vector2Int nloc = new Vector2Int(loc.x + dir.x, loc.y + dir.y);
             if (OutOfRange(nloc)) { continue; }
+            float terrainHeight = m_terrain[loc.x + dir.x, loc.y + dir.y];
             localFlow.Add(
-                new Tuple<Vector2Int, float>(dir, m_noiseMap[loc.x + dir.x, loc.y + dir.y])
+                new Tuple<Vector2Int, float>(dir, terrainHeight)
                 );
+            differentHeights |= localHeight != terrainHeight;
         }
+
+        if (!differentHeights) { return new Vector2Int(0, 0); }
 
         localFlow.Sort((lhs, rhs) => lhs.Item2.CompareTo(rhs.Item2));
 
@@ -473,12 +539,11 @@ public class BeaverMapGenerator : MonoBehaviour
             if (failFunc(river, depth)) { continue; }
             if(m_isDam[river.x, river.y]) { continue; }
 
-            float height = m_noiseMap[loc.x, loc.y];
+            float height = m_terrain[loc.x, loc.y];
 
 
             if (height >= threshold) { continue; }
             float adjust = adjustFunc(river);
-            if (adjust > 0) { Debug.Log(adjust); }
 
 
 
@@ -489,18 +554,19 @@ public class BeaverMapGenerator : MonoBehaviour
 
     float DamAdjust(Vector2Int loc)
     {
-        return 50;
+        return damAdjust;
     }
     void FillInRiver(int maxDepth)
     {
+        m_isWater = new bool[WIDTH, HEIGHT];
         Func<Vector2Int, int, bool> failFunc = (loc, depth) => m_isWater[loc.x, loc.y] && depth < maxDepth;
-        Func<Vector2Int, float> adjustFunc = loc => CountDams(loc) * DamAdjust(loc) - 1.5f;
+        Func<Vector2Int, float> adjustFunc = loc => (CountDams(loc) != 0 ? 1 : 0) * DamAdjust(loc) - riverFalloff;
         for (int i = 0; i < m_riverPath.Count; ++i)
         {
             Vector2Int loc = m_riverPath[i];
             float progress = (float)i / m_riverPath.Count;
             float riverDepth = (startWidth + ((endWidth - startWidth) * progress));
-            float threshold = riverDepth + m_noiseMap[loc.x, loc.y];
+            float threshold = riverDepth + m_terrain[loc.x, loc.y];
             FillInAdjacent(ref m_isWater, loc, threshold, 0, failFunc, adjustFunc);
         }
 
@@ -525,7 +591,7 @@ public class BeaverMapGenerator : MonoBehaviour
     void FillInBanks(Vector2Int loc)
     {
         Func<Vector2Int, int, bool> failFunc = (loc, depth) => m_isWater[loc.x, loc.y]&& depth < 4;
-        Func<Vector2Int, float> adjustFunc = loc => -1.5f;
+        Func<Vector2Int, float> adjustFunc = loc => -bankFalloff;
         float threshold = m_noiseMap[loc.x, loc.y] + 0.01f * (loc - m_riverPath[0]).magnitude;
         FillInAdjacent(ref m_isMud, loc, threshold, 0, failFunc, adjustFunc);
     }
@@ -606,19 +672,148 @@ public class BeaverMapGenerator : MonoBehaviour
         return waterTile;
     }
 
+    void InitTerrain()
+    {
+        m_terrain = new float[WIDTH, HEIGHT];
+    }
+
     // Update is called once per frame
     void SetupRiver()
     {
-
         CreateIntialPath();
         SimplifyPath();
-        RaiseInitialPath();
+        CalculateDistancesFromRiverPath();
+        CalculateDirToRiver();
+        InitTerrain();
         CarveRiverPath();
 
-        FillInRiver(25);
+        FillInRiver(m_RiverSearchSize);
         AddMud();
-        AddMountains();
+        //AddMountains();
     }
+
+    void FillAllWater()
+    {
+        for (int x = 0; x < WIDTH; x++)
+        {
+            for (int y = 0; y < HEIGHT; y++)
+            {
+                m_isWater[x, y] = true;
+            }
+        }
+    }
+
+    int GetMinSegmentId(int[,] waterSegmentId, int x, int y)
+    {
+        Vector2Int loc = new Vector2Int(x, y);
+        int minId = waterSegmentId[x, y];
+        foreach (Vector2Int dir in dirs)
+        {
+            if(dir.magnitude > 1.0f) { continue; }
+            Vector2Int adjLoc = dir + loc;
+            if (OutOfRange(adjLoc)) { continue; }
+            if(waterSegmentId[adjLoc.x, adjLoc.y] == 0) { continue; }
+            if(m_isDam[adjLoc.x, adjLoc.y]) { continue; }
+            minId = Mathf.Min(minId, waterSegmentId[adjLoc.x, adjLoc.y]);
+        }
+        return minId;
+    }
+    int SegmentWater(out int sizeOfLowestId)
+    {
+        int[,] waterSegmentId = new int[WIDTH, HEIGHT];
+        int nextId = 1; // reserve 0
+
+        foreach (Vector2Int loc in m_riverPath)
+        {
+            waterSegmentId[loc.x, loc.y] = nextId++;
+        }
+
+        for (int x = 0; x < WIDTH; x++)
+        {
+            for (int y = 0; y < HEIGHT; y++)
+            {
+                if(m_isDam[x, y]) { continue; }
+                if (!m_isWater[x, y]) { continue; }
+                if(waterSegmentId[x, y] != 0) { continue; }
+                waterSegmentId[x, y] = nextId++;
+            }
+        }
+
+        bool bUpdating;
+        int itr = 0;
+
+        do
+        {
+            bUpdating = false;
+            for (int x = 0; x < WIDTH; x++)
+            {
+                for (int y = 0; y < HEIGHT; y++)
+                {
+                    int origId = waterSegmentId[x, y];
+                    if (origId == 0) { continue; }
+                    waterSegmentId[x, y] = GetMinSegmentId(waterSegmentId, x, y);
+                    bUpdating |= waterSegmentId[x, y] != origId;
+                }
+            }
+        } while (bUpdating && itr++ < 1000);
+
+        int minId = int.MaxValue;
+        sizeOfLowestId = 0;
+        HashSet<int> ids = new HashSet<int>();
+        for (int x = 0; x < WIDTH; x++)
+        {
+            for (int y = 0; y < HEIGHT; y++)
+            {
+                int id = waterSegmentId[x, y];
+                if (id == 0) { continue; }
+                if (id < minId)
+                {
+                    minId = id;
+                    sizeOfLowestId = 0;
+                }
+                sizeOfLowestId++;
+                ids.Add(id);
+            }
+        }
+        return ids.Count;
+    }
+
+    void Update()
+    {
+        if (Time.time > m_time + 1)
+        {
+            m_time = Time.time;
+            InitTerrain();
+            CarveRiverPath();
+            DrawRiver();
+            if (!m_debugFlows)
+            {
+                FillInRiver(m_RiverSearchSize);
+            }
+            else
+            {
+                FillAllWater();
+            }
+            int sizeBehindDam;
+            int segmentCount = SegmentWater(out sizeBehindDam);
+            //Debug.Log("Segment Count: " + segmentCount);
+            if (segmentCount > 1) 
+            {
+                WinConditionMet();
+                Debug.Log(sizeBehindDam + " tiles behind the dam");
+            }
+
+            //Debug.Log("Done in " + (Time.time - m_time) + "seconds");
+        }        
+    }
+
+
+    void WinConditionMet()
+    {
+        m_win = true;
+
+    }
+    public bool GetWin() { return m_win; }
 
     void DrawRiver()
     { 
@@ -626,13 +821,25 @@ public class BeaverMapGenerator : MonoBehaviour
         {
             for(int y = 0; y < HEIGHT; y++)
             {
-                if (m_isDam[x, y])
+                if (m_debugRiverPath && m_riverPath[0] == (new Vector2Int(x, y)))
+                {
+                    tiles.SetTile(new Vector3Int(x, y, 0), startTile);
+                }
+                else if (m_debugRiverPath && m_riverPath[m_riverPath.Count - 1] == new Vector2Int(x, y))
+                {
+                    tiles.SetTile(new Vector3Int(x, y, 0), endTile );
+                }
+                else if(m_debugRiverPath && m_riverPath.Contains(new Vector2Int(x, y)))
+                {
+                    tiles.SetTile(new Vector3Int(x, y, 0), mudTile);
+                }
+                else if (m_debugDams && m_isDam[x, y])
                 {
                     tiles.SetTile(new Vector3Int(x, y, 0), startTile);
                 }
                 else if (m_isWater[x, y])
                 {
-                    if (!m_showFlows || x % 2 != 0 || y % 2 != 0)
+                    if (!m_showFlows || x % 4 != 0 || y % 4 != 0)
                     {
                         tiles.SetTile(new Vector3Int(x, y, 0), waterTile);
                     }
@@ -679,7 +886,9 @@ public class BeaverMapGenerator : MonoBehaviour
         Vector2Int start2d = new Vector2Int(start.x, start.y);
         Vector2Int end2d = new Vector2Int(end.x, end.y);
 
-        List<Vector2Int> locs = GetStepsBetween(start2d, end2d);
+        if(OutOfRange(start2d) || OutOfRange(end2d)) { return; }
+
+        List<Vector2Int> locs = GetStepsBetween(start2d, end2d, false);
 
         foreach (Vector2Int loc in locs)
         {
