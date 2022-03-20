@@ -75,6 +75,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Shark_Sad
       objectReference: {fileID: 0}
+    - target: {fileID: 5629662226158436172, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 41972f70f9c127b4e8ef81db082e65ab, type: 3}
     - target: {fileID: 8319249128787774750, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}
       propertyPath: m_Enabled
       value: 0

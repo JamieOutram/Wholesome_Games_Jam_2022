@@ -22,6 +22,7 @@ public class DialogueTextBehaviour : MonoBehaviour
         fullText = "";
         timer = 0;
         isWriting = false;
+        Hide();
     }
 
     // Update is called once per frame
