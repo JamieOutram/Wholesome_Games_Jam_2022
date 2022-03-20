@@ -19,6 +19,7 @@ public class check_3 : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log(other.transform.tag);
         if (other.transform.tag == "snake3")
         {
             check_1.coll[0] = true;
