@@ -19,7 +19,7 @@ public class BeaverMapGenerator : MonoBehaviour
     public int WIDTH = 89 * 2;
     public int HEIGHT = 100;
 
-    public TileBase waterTile, grassTile, mountainTile, mudTile, startTile, endTile;
+    public TileBase waterTile, grassTile, mountainTile, pathTile, mudTile, startTile, endTile;
     public TileBase leftTile, upLeftTile, upTile, upRightTile, rightTile, downRightTile, downTile, downLeftTile;
     public Tilemap tiles;
 
@@ -91,8 +91,10 @@ public class BeaverMapGenerator : MonoBehaviour
         m_isMud = new bool[WIDTH, HEIGHT];
         m_isMountain = new bool[WIDTH, HEIGHT];
 
-        //Random.InitState(20);
-        Noise.Seed = (int)System.DateTime.Now.Ticks;
+        //Noise.Seed = (int)System.DateTime.Now.Ticks;
+        Noise.Seed = -705499144;
+
+        Debug.Log(Noise.Seed);
         m_noiseMap = Noise.Calc2D(WIDTH, HEIGHT, noiseScale);
 
         m_noiseMin = 256.0f;
@@ -838,7 +840,7 @@ public class BeaverMapGenerator : MonoBehaviour
                 }
                 else if(m_debugRiverPath && m_riverPath.Contains(new Vector2Int(x, y)))
                 {
-                    tiles.SetTile(new Vector3Int(x, y, 0), mudTile);
+                    tiles.SetTile(new Vector3Int(x, y, 0), pathTile);
                 }
                 else if (m_debugDams && m_isDam[x, y])
                 {
@@ -912,6 +914,12 @@ public class BeaverMapGenerator : MonoBehaviour
     public void ToggleFlows()
     {
         m_showFlows = !m_showFlows;
+        DrawRiver();
+    }
+
+    public void ToggleRiverPath()
+    {
+        m_debugRiverPath = !m_debugRiverPath;
         DrawRiver();
     }
 
