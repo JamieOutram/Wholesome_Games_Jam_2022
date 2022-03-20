@@ -3,12 +3,18 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Map Cam
+  - wool
+  - snake1
+  - snake2
+  - snake3
+  - snake4
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Sheep
   - Water
   - UI
   - 
@@ -38,9 +44,20 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 203552493
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
   - name: Terrain
     uniqueID: 2805790759
+  - name: Sheep
+    uniqueID: 2749813879
+    locked: 0
+  - name: Background
+    uniqueID: 2749118037
+    locked: 0
+  - name: Forground
+    uniqueID: 1410792333
     locked: 0
