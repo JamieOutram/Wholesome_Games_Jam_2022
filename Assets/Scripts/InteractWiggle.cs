@@ -44,6 +44,9 @@ public class InteractWiggle : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         isWiggle = false;
+        target.localScale = minPos;
+        target.localScale = minScale;
+        timer = 0;
     }
 
 
