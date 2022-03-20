@@ -14,7 +14,7 @@ public class ProgressTracker : MonoBehaviour
         // If there is an instance, and it's not me, delete myself.
         if (Instance != null && Instance != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
         else
         {
