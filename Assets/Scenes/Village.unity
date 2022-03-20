@@ -1012,8 +1012,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   snake: 0
   mouse: 0
-  beaver: 1
-  shark: 1
+  beaver: 0
+  shark: 0
   sheep: 0
 --- !u!4 &704285511
 Transform:
