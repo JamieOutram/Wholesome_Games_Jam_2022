@@ -87,6 +87,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Beaver_Happy
       objectReference: {fileID: 0}
+    - target: {fileID: 5629662226158436172, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 860e44c297965d4448c1d3a8163022a5, type: 3}
     m_RemovedComponents:
     - {fileID: 2729432347670937878, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}

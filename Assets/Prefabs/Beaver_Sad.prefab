@@ -87,6 +87,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Beaver_Sad
       objectReference: {fileID: 0}
+    - target: {fileID: 5629662226158436172, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: f5255d118ffca2040ad2fc0c7604cf8a, type: 3}
     - target: {fileID: 8319249128787774750, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}
       propertyPath: m_Enabled
       value: 0

@@ -14,6 +14,7 @@ public class DialogueTextBehaviour : MonoBehaviour
     public bool isWriting;
     public TextPromptBehaviour prompt;
     public Image backing;
+    public bool isFirstFrame;
     
     // Start is called before the first frame update
     void Start()
@@ -22,14 +23,22 @@ public class DialogueTextBehaviour : MonoBehaviour
         fullText = "";
         timer = 0;
         isWriting = false;
+        isFirstFrame = false;
+        Hide();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (isFirstFrame)
+        {
+            isFirstFrame = false; 
+            return;
+        }
+
         if (isWriting)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E))
             {
                 Skip();
             }
@@ -57,6 +66,7 @@ public class DialogueTextBehaviour : MonoBehaviour
         pointer = 0;
         timer = 0;
         isWriting = true;
+        isFirstFrame = true;
     }
 
     void UpdateText()

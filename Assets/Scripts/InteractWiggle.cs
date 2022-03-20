@@ -16,13 +16,15 @@ public class InteractWiggle : MonoBehaviour
     Vector3 maxScale;
     Vector3 minPos;
     Vector3 minScale;
+    
 
 
     void Start()
     {
+        
         localPosition = target.localPosition;
         maxPos = target.localPosition + wiggleOffset;
-        maxScale = target.localScale + wiggleScale;
+        maxScale = Vector3.Scale(target.localScale,(Vector3.one + wiggleScale));
         minPos = target.localPosition;
         minScale = target.localScale;
     }
