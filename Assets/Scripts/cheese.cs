@@ -10,7 +10,8 @@ public class cheese : MonoBehaviour
         if(collision.transform.tag == "Player")
         {
             Destroy(gameObject);
-            //SceneManager.LoadScene("Village");
+            ProgressTracker.Instance.mouse = true;
+            TransitionBehaviour.TriggerFade("Village");
         }
     }
 }
