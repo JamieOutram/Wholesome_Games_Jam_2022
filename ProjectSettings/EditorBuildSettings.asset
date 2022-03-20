@@ -15,9 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/SnakeMinigame.unity
     guid: 601ee4a9f636c75449ae736873cc520a
   - enabled: 1
-    path: Assets/Scenes/BeaverMinigame.unity
-    guid: 075e298ddfd5bbb4d988c723073dcb27
-  - enabled: 1
     path: Assets/Scenes/SheepMinigame4.unity
     guid: 9bf5f8dd01615bd4db07ff10672d8e8f
   - enabled: 1
@@ -32,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MouseMinigame.unity
     guid: 078bfc9af8d687e48b2b6a511534e7e4
+  - enabled: 1
+    path: Assets/Scenes/ThatDamGame.unity
+    guid: af1fcb6a467c7974199dd1ad2425e56a
   m_configObjects: {}

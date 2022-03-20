@@ -50,6 +50,8 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Terrain
+    uniqueID: 2805790759
   - name: Sheep
     uniqueID: 2749813879
     locked: 0
