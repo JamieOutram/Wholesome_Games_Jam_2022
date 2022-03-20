@@ -28,5 +28,10 @@ public class TransitionBehaviour : MonoBehaviour
     {
         nextScene = scene;
         anim.SetTrigger("FadeBlack");
+        GameObject music = GameObject.Find("Music");
+        if (!ReferenceEquals(music, null))
+        {
+            Destroy(music);
+        }
     }
 }

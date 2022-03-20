@@ -307,6 +307,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Beaver_Sad
       objectReference: {fileID: 0}
+    - target: {fileID: 6648773112145026290, guid: 55281549ddbc3a44e8c7ec74e3371f4e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55281549ddbc3a44e8c7ec74e3371f4e, type: 3}
 --- !u!1 &232880093
@@ -825,11 +829,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 772a3c162b84db1489f020b1d33bf290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snake: 0
-  mouse: 0
-  beaver: 0
-  shark: 0
-  sheep: 0
+  snake: 1
+  mouse: 1
+  beaver: 1
+  shark: 1
+  sheep: 1
 --- !u!4 &704285511
 Transform:
   m_ObjectHideFlags: 0
@@ -1105,6 +1109,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1456785073959429744, guid: 9996427855887e847bf3a7a115565d69, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6490705180635396418, guid: 9996427855887e847bf3a7a115565d69, type: 3}
       propertyPath: textBehaviour
       value: 
@@ -1964,6 +1972,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2551666766688012504, guid: 9e1175ad20511ad489f2c8777010e635, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7876022590729738218, guid: 9e1175ad20511ad489f2c8777010e635, type: 3}
       propertyPath: textBehaviour
       value: 
