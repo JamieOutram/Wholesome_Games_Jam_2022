@@ -598,7 +598,7 @@ public class BeaverMapGenerator : MonoBehaviour
 
     void FillInBanks(Vector2Int loc)
     {
-        Func<Vector2Int, int, bool> failFunc = (loc, depth) => m_isWater[loc.x, loc.y] && depth < 4;
+        Func<Vector2Int, int, bool> failFunc = (loc, depth) => m_isWater[loc.x, loc.y] || depth < 4;
         Func<Vector2Int, float> adjustFunc = loc => -bankFalloff;
         float threshold = m_noiseMap[loc.x, loc.y] + 0.01f * (loc - m_riverPath[0]).magnitude;
         FillInAdjacent(ref m_isMud, loc, threshold, 0, failFunc, adjustFunc);
