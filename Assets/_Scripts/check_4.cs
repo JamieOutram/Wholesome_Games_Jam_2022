@@ -21,12 +21,11 @@ public class check_4 : MonoBehaviour
     {
         if (other.transform.tag == "snake4")
         {
-            check_1.coll[0] = true;
-            Debug.Log("snake4");
+            check_1.coll[3] = true;
             if(IsAllDone())
             {
                 Debug.Log("All Done!");
-                //SceneManager.LoadScene("SnakeDone");
+                SceneManager.LoadScene("Village");
             }
         }
     }

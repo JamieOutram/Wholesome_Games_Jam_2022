@@ -20,14 +20,14 @@ public class check_3 : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log(other.transform.tag);
+        Debug.Log(other.gameObject.name);
         if (other.transform.tag == "snake3")
         {
-            check_1.coll[0] = true;
-            Debug.Log("snake3");
+            check_1.coll[2] = true;
             if(IsAllDone())
             {
                 Debug.Log("All Done!");
-                //SceneManager.LoadScene("SnakeDone");
+                SceneManager.LoadScene("Village");
             }
         }
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class check_1 : MonoBehaviour
 {
-    public static bool[] coll = new bool[3];
+    public static bool[] coll = new bool[4];
 
     private bool IsAllDone()
     {
@@ -24,11 +24,10 @@ public class check_1 : MonoBehaviour
         if (other.transform.tag == "snake1")
         {
             coll[0] = true;
-            Debug.Log("snake1");
             if(IsAllDone())
             {
                 Debug.Log("All Done!");
-                //SceneManager.LoadScene("SnakeDone");
+                SceneManager.LoadScene("Village");
             }
         }
     }
