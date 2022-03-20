@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField][Range(0,2000)]
-    private float force = 100;
+    [SerializeField][Range(0,1000)]
+    private float force = 200;
     private Rigidbody2D rb;
     private Camera playerCam;
     private Camera mapCam;
+    bool up;
+    bool down;
+    bool left;
+    bool right;
 
     // Start is called before the first frame update
     void Start()
@@ -22,22 +26,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.W))
-        {
-            rb.AddForce(new Vector2(0, force));
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            rb.AddForce(new Vector2(0, -force));
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            rb.AddForce(new Vector2(-force, 0));
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            rb.AddForce(new Vector2(force, 0));
-        }
+        up = Input.GetKey(KeyCode.W);
+        down = Input.GetKey(KeyCode.S);
+        left = Input.GetKey(KeyCode.A);
+        right = Input.GetKey(KeyCode.D);
+        
         if (Input.GetKeyDown(KeyCode.M))
         {
             ShowMap();
@@ -47,6 +40,27 @@ public class PlayerMovement : MonoBehaviour
             HideMap();
         }
     }
+
+    private void FixedUpdate()
+    {
+        if(up)
+        {
+            rb.AddForce(new Vector2(0, force));
+        }
+        if (down)
+        {
+            rb.AddForce(new Vector2(0, -force));
+        }
+        if (left)
+        {
+            rb.AddForce(new Vector2(-force, 0));
+        }
+        if (right)
+        {
+            rb.AddForce(new Vector2(force, 0));
+        }
+    }
+
 
     void ShowMap()
     {
