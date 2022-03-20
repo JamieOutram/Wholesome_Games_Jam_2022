@@ -14,7 +14,7 @@ public class AnimalDialogue : MonoBehaviour
             "Really Very Sad",
         },
         ["Happy_Beaver"] = new string[]{
-            "I am a Happy Beaver",
+            "I am a happy Beaver",
             "Super Duper Happy!",
         },
         ["Sad_Shark"] = new string[]{
@@ -22,7 +22,7 @@ public class AnimalDialogue : MonoBehaviour
             "Really Very Sad",
         },
         ["Happy_Shark"] = new string[]{
-            "I am a sad Beaver",
+            "I am a happy Shark",
             "Super Duper Happy!",
         },
     };
