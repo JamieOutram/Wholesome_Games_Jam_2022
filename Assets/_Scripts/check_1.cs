@@ -27,7 +27,8 @@ public class check_1 : MonoBehaviour
             if(IsAllDone())
             {
                 Debug.Log("All Done!");
-                SceneManager.LoadScene("Village");
+                ProgressTracker.Instance.snake = true;
+                TransitionBehaviour.TriggerFade("Village");
             }
         }
     }
