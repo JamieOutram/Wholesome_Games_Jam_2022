@@ -6,7 +6,9 @@ public class PlayerAnimations : MonoBehaviour
 {
     Rigidbody2D rb;
     Animator anim;
-    float walkSensitivity = 0.01f; 
+    float walkSensitivity = 0.01f;
+    AudioSource walkSound;
+
     enum Dir
     {
         UP=0,
@@ -20,6 +22,8 @@ public class PlayerAnimations : MonoBehaviour
     {
         rb = transform.parent.gameObject.GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        walkSound = GetComponent<AudioSource>();
+        walkSound.enabled = false;
     }
 
     // Update is called once per frame
@@ -28,10 +32,12 @@ public class PlayerAnimations : MonoBehaviour
         if (rb.velocity.magnitude > walkSensitivity)
         {
             anim.SetBool("isWalking", true);
+            walkSound.enabled=true;
         }
         else
         {
             anim.SetBool("isWalking", false);
+            walkSound.enabled = false;
         }
 
         if(Mathf.Abs(rb.velocity.x) > Mathf.Abs(rb.velocity.y))
