@@ -1223,6 +1223,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2eba98cfacae8d48aff3b39ca1da3af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sadBeaver: {fileID: 2800000, guid: 1d310bfa071ed7b40951f2f5140a7591, type: 3}
+  happyBeaver: {fileID: 2800000, guid: ac4ac00533ce6ca4cb01d0fc56b0aa33, type: 3}
+  mapgen: {fileID: 1444125372}
 --- !u!114 &1788704482
 MonoBehaviour:
   m_ObjectHideFlags: 0

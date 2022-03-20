@@ -255,6 +255,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 780849691346473210, guid: 55281549ddbc3a44e8c7ec74e3371f4e, type: 3}
+      propertyPath: sceneName
+      value: ThatDamGame
+      objectReference: {fileID: 0}
     - target: {fileID: 1324401740248548288, guid: 55281549ddbc3a44e8c7ec74e3371f4e, type: 3}
       propertyPath: textBehaviour
       value: 
@@ -384,7 +388,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1410792333
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ccfef78ce7a06664f8beb38423c2530b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -831,8 +835,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   snake: 1
   mouse: 1
-  beaver: 1
-  shark: 1
+  beaver: 0
+  shark: 0
   sheep: 1
 --- !u!4 &704285511
 Transform:

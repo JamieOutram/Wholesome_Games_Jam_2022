@@ -61,6 +61,8 @@ public class BeaverMapGenerator : MonoBehaviour
     private int[,] m_distanceFromRiver;
     private Vector2Int[,] m_dirToRiver;
 
+    private int sharkWaterSize = 500;
+
     private bool m_showFlows;
     private bool m_win = false;
 
@@ -797,9 +799,9 @@ public class BeaverMapGenerator : MonoBehaviour
             int sizeBehindDam;
             int segmentCount = SegmentWater(out sizeBehindDam);
             //Debug.Log("Segment Count: " + segmentCount);
-            if (segmentCount > 1) 
+            if (segmentCount > 1 && !m_win) 
             {
-                WinConditionMet();
+                WinConditionMet(sizeBehindDam);
                 Debug.Log(sizeBehindDam + " tiles behind the dam");
             }
 
@@ -808,10 +810,12 @@ public class BeaverMapGenerator : MonoBehaviour
     }
 
 
-    void WinConditionMet()
+    void WinConditionMet(int waterCount)
     {
         m_win = true;
-
+        ProgressTracker.Instance.beaver = true;
+        ProgressTracker.Instance.shark = waterCount > sharkWaterSize;
+        TransitionBehaviour.TriggerFade("Village");
     }
     public bool GetWin() { return m_win; }
 
