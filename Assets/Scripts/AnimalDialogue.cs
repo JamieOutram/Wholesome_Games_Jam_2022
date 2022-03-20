@@ -62,6 +62,11 @@ public class AnimalDialogue : MonoBehaviour
 
     public void NextDialogue()
     {
+        if (textBehaviour.isWriting)
+        {
+            return;
+        }
+
         string[] text;
         if (dialogue.ContainsKey(dialogueKey))
         {
@@ -82,6 +87,7 @@ public class AnimalDialogue : MonoBehaviour
             }
             return;
         }
+
         textBehaviour.WriteText(text[pointer]);
         pointer++;
     }
