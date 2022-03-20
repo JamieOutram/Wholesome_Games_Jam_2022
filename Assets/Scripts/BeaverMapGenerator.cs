@@ -66,6 +66,7 @@ public class BeaverMapGenerator : MonoBehaviour
 
     private int sharkWaterSize = 500;
 
+    private bool m_newDam = false;
     private bool m_showFlows;
     private bool m_win = false;
 
@@ -566,7 +567,7 @@ public class BeaverMapGenerator : MonoBehaviour
     void FillInRiver(int maxDepth)
     {
         m_isWater = new bool[WIDTH, HEIGHT];
-        Func<Vector2Int, int, bool> failFunc = (loc, depth) => m_isWater[loc.x, loc.y] && depth < maxDepth;
+        Func<Vector2Int, int, bool> failFunc = (loc, depth) => m_isWater[loc.x, loc.y] || depth >= maxDepth;
         Func<Vector2Int, float> adjustFunc = loc => (CountDams(loc) != 0 ? 1 : 0) * DamAdjust(loc) - riverFalloff;
         for (int i = 0; i < m_riverPath.Count; ++i)
         {
@@ -597,7 +598,7 @@ public class BeaverMapGenerator : MonoBehaviour
 
     void FillInBanks(Vector2Int loc)
     {
-        Func<Vector2Int, int, bool> failFunc = (loc, depth) => m_isWater[loc.x, loc.y]&& depth < 4;
+        Func<Vector2Int, int, bool> failFunc = (loc, depth) => m_isWater[loc.x, loc.y] && depth < 4;
         Func<Vector2Int, float> adjustFunc = loc => -bankFalloff;
         float threshold = m_noiseMap[loc.x, loc.y] + 0.01f * (loc - m_riverPath[0]).magnitude;
         FillInAdjacent(ref m_isMud, loc, threshold, 0, failFunc, adjustFunc);
@@ -787,7 +788,7 @@ public class BeaverMapGenerator : MonoBehaviour
 
     void Update()
     {
-        if (Time.time > m_time + 1)
+        if (Time.time > m_time + 0.25)
         {
             m_time = Time.time;
             InitTerrain();
@@ -795,21 +796,38 @@ public class BeaverMapGenerator : MonoBehaviour
             DrawRiver();
             if (!m_debugFlows)
             {
-                FillInRiver(m_RiverSearchSize);
-            }
-            else
+                if (m_newDam)
+                {
+                    for (int x = 0; x < WIDTH; x++)
+                    {
+                        for (int y = 0; y < HEIGHT; y++)
+                        {
+                            m_isWater[x, y] = false;
+                            m_isMud[x, y] = false;
+                            m_isMountain[x, y] = false;
+                        }
+                    }
+                    FillInRiver(m_RiverSearchSize);
+                    AddMud();
+                }
+                }
+                else
             {
                 FillAllWater();
             }
-            int sizeBehindDam;
-            int segmentCount = SegmentWater(out sizeBehindDam);
-            //Debug.Log("Segment Count: " + segmentCount);
-            if (segmentCount > 1 && !m_win) 
-            {
-                WinConditionMet(sizeBehindDam);
-                Debug.Log(sizeBehindDam + " tiles behind the dam");
-            }
 
+            if (m_newDam)
+            {
+                int sizeBehindDam;
+                int segmentCount = SegmentWater(out sizeBehindDam);
+                //Debug.Log("Segment Count: " + segmentCount);
+                if (segmentCount > 1 && !m_win)
+                {
+                    WinConditionMet(sizeBehindDam);
+                    Debug.Log(sizeBehindDam + " tiles behind the dam");
+                }
+            }
+            m_newDam = false;
             //Debug.Log("Done in " + (Time.time - m_time) + "seconds");
         }        
     }
@@ -906,9 +924,9 @@ public class BeaverMapGenerator : MonoBehaviour
         }
 
         audioSource.PlayOneShot(splashSound);
-
-        RecalculateForNewDam();
-        DrawRiver();
+        m_newDam = true;
+        //RecalculateForNewDam();
+        //DrawRiver();
     }
 
     public void ToggleFlows()
