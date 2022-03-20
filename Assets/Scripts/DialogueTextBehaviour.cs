@@ -13,6 +13,7 @@ public class DialogueTextBehaviour : MonoBehaviour
     float timer;
     public bool isWriting;
     public TextPromptBehaviour prompt;
+    public Image backing;
     
     // Start is called before the first frame update
     void Start()
@@ -21,7 +22,6 @@ public class DialogueTextBehaviour : MonoBehaviour
         fullText = "";
         timer = 0;
         isWriting = false;
-        WriteText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
     }
 
     // Update is called once per frame
@@ -38,10 +38,19 @@ public class DialogueTextBehaviour : MonoBehaviour
                 UpdateText();
             }
         }
+        else if (backing.enabled)
+        {
+            //If shown and end of dialogue
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E))
+            {
+                Hide();
+            }
+        }
     }
 
     public void WriteText(string text)
     {
+        Show();
         prompt.Hide();
         fullText = text;
         this.text.text = "";
@@ -76,5 +85,18 @@ public class DialogueTextBehaviour : MonoBehaviour
         isWriting = false;
         this.text.text = fullText;
         prompt.Show();
+    }
+
+
+    void Hide()
+    {
+        backing.enabled = false;
+        text.enabled = false;
+        prompt.Hide();
+    }
+    void Show()
+    {
+        backing.enabled = true;
+        text.enabled = true;
     }
 }

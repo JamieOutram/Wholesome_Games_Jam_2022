@@ -172,6 +172,7 @@ MonoBehaviour:
   writeSpeed: 0.025
   isWriting: 0
   prompt: {fileID: 7627477790823257908}
+  backing: {fileID: 7627477789968013831}
 --- !u!1 &7627477790823257914
 GameObject:
   m_ObjectHideFlags: 0
