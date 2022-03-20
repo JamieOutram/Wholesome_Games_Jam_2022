@@ -15,7 +15,9 @@ public class remove_wool4 : MonoBehaviour
             Destroy(other.gameObject);
             if (wool == 37)
             {
-                SceneManager.LoadScene("SheepMinigame1");
+                ProgressTracker.Instance.sheep = true;
+                TransitionBehaviour.TriggerFade("Village");
+                wool = 0;
             }
         }
     }

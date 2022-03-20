@@ -7,6 +7,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2729432347670937878, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}
+      propertyPath: sceneName
+      value: SnakeMinigame
+      objectReference: {fileID: 0}
+    - target: {fileID: 3259669245967340599, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}
+      propertyPath: flag
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4420281623878383416, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}
       propertyPath: m_Sprite
       value: 

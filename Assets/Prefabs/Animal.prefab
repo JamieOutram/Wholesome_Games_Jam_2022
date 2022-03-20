@@ -93,6 +93,8 @@ GameObject:
   - component: {fileID: 4420281624602710573}
   - component: {fileID: 4420281624602710578}
   - component: {fileID: 4420281624602710572}
+  - component: {fileID: 2729432347670937878}
+  - component: {fileID: 3259669245967340599}
   m_Layer: 0
   m_Name: Animal
   m_TagString: Untagged
@@ -146,6 +148,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textBehaviour: {fileID: 0}
   dialogueKey: Sad_Shark
+--- !u!114 &2729432347670937878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4420281624602710579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ef30774e0e71a4986ed5c22950ae67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: 
+--- !u!114 &3259669245967340599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4420281624602710579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab5d97cee3c29049b67dd399fd42d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flag: 0
+  state: 0
 --- !u!1 &4420281624921880399
 GameObject:
   m_ObjectHideFlags: 0
