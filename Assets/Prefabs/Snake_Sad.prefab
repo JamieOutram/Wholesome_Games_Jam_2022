@@ -29,7 +29,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4420281624602710572, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}
       propertyPath: dialogueKey
-      value: Sad_Snake
+      value: Sad_Kids
       objectReference: {fileID: 0}
     - target: {fileID: 4420281624602710573, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}
       propertyPath: m_RootOrder
@@ -82,10 +82,11 @@ PrefabInstance:
     - target: {fileID: 5629662226158436172, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 4c73cb77f84834841821206ee6bc9a72, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 8319249128787774750, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2729432347670937878, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 53f11275b17148f4ba90e72609cdf449, type: 3}

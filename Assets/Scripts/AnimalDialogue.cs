@@ -51,6 +51,10 @@ public class AnimalDialogue : MonoBehaviour
             "Oh, look how cute they all look in their own little baskets.",
             "Thank you! If you ever need help climbing trees please let me know."
         },
+        ["Sad_Kids"] = new string[]{
+            "Please help us sir",
+            "We can't moooove.",
+        },
     };
 
     string defaultDialogue = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,";
