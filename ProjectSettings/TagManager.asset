@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Map Cam
   - wool
+  - snake1
+  - snake2
+  - snake3
+  - snake4
   layers:
   - Default
   - TransparentFX
@@ -40,6 +44,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 203552493
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
