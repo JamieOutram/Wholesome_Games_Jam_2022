@@ -926,11 +926,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 772a3c162b84db1489f020b1d33bf290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snake: 1
-  mouse: 1
-  beaver: 1
-  shark: 1
-  sheep: 1
+  snake: 0
+  mouse: 0
+  beaver: 0
+  shark: 0
+  sheep: 0
 --- !u!4 &704285511
 Transform:
   m_ObjectHideFlags: 0
